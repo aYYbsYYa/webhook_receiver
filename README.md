@@ -30,7 +30,7 @@ python webhook_receiver.py
 ### POST方式
 
 ```bash
-curl -X POST http://localhost:5000/webhook \
+curl -X POST http://localhost:5000/webhook?api_key=your-api-key-here \
   -H "Content-Type: application/json" \
   -d '{"message": "你好\n这是一条测试消息"}'
 ```
@@ -38,15 +38,24 @@ curl -X POST http://localhost:5000/webhook \
 ### GET方式
 
 ```bash
-curl "http://localhost:5000/webhook?message=你好，这是一条测试消息"
+curl "http://localhost:5000/webhook?api_key=your-api-key-here&message=你好，这是一条测试消息"
 ```
+
+### GET参数说明
+
+- `api_key`：API密钥，用于验证发送者身份，可选参数，默认值`your-api-key-here`
+- `message`：消息内容，必填参数
+- `text_from`: 发送者来源，可选参数，默认值`aYYbsYYa`
+
+### POST参数说明
+- `message`：消息内容，必填参数
 
 ## 配置说明
 
 ### config.ini
 
 可以在config.ini中配置以下参数：
-- API密钥验证（可选）
+- API密钥验证（默认your-api-key-here）
 - 端口号（默认5000）
 - 其他自定义配置
 
@@ -64,3 +73,14 @@ curl "http://localhost:5000/webhook?message=你好，这是一条测试消息"
 1. 确保5000端口未被占用
 2. 如需外网访问，请配置相应的防火墙规则
 3. 建议在使用API密钥验证的情况下使用
+
+## 待添加功能
+- [ ] TTS语音生成（决定是否进行语音提醒）
+  - 栗云AI API提供支持
+  - GET参数是否决定开启tts-type
+  - GET参数传递具体内容tts-text
+- [ ] 通知转发功能
+  - 邮箱
+  - QQ消息（OneBot）
+    - 附带监听消息，若监听到回复关键词，则执行cmd操作
+- [ ] web同时显示界面
