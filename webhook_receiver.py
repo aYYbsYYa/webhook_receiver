@@ -11,6 +11,8 @@ import base64
 import configparser
 import random
 
+from config import get_api_key
+
 # 确保logs目录存在
 os.makedirs('logs', exist_ok=True)
 
@@ -378,8 +380,8 @@ def webhook():
         message = data.get('message')
     
     # API密钥验证
-    #if request.args.get('api_key') != 'sk-aYYbsYYa':
-    #    return jsonify({'error': 'Invalid API key'}), 401
+    if request.args.get('api_key') != get_api_key():
+        return jsonify({'error': 'Invalid API key'}), 401
         
     # 记录完整日志
     logger.info(json.dumps(message, ensure_ascii=False))
