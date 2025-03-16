@@ -253,7 +253,7 @@ class WebhookGUI:
         self.root.after(1000, tooltip.destroy)
         
     def display_message(self, message, custom_timestamp=None, text_from="aYYbsYYa"):
-        timestamp = custom_timestamp if custom_timestamp else datetime.now().strftime('%H:%M')
+        timestamp = custom_timestamp if custom_timestamp else datetime.now().strftime('%H:%M:%S')
         
         if isinstance(message, str):
             try:
