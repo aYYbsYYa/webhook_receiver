@@ -1,6 +1,6 @@
 # Webhook 消息接收器
 
-一个简单的Webhook消息接收器，提供GUI界面显示接收到的消息。支持通过POST或GET方式发送消息，并保存历史记录。
+一个简单的Webhook消息接收器，提供GUI界面显示接收到的消息。支持通过POST或GET方式发送消息，并保存历史记录。支持消息转发到OneBot和邮件。
 
 ## 功能特点
 
@@ -10,6 +10,8 @@
 - 支持消息换行显示
 - 自动加载历史消息
 - 支持滚动查看历史消息
+- 支持消息转发到OneBot
+- 支持消息转发到邮件
 
 ## 安装依赖
 
@@ -21,8 +23,14 @@ pip install -r requirements.txt
 
 1. 启动服务器：
 
+带GUI界面启动：
 ```bash
 python webhook_receiver.py
+```
+
+无GUI界面启动：
+```bash
+python webhook_receiver.py --no-gui
 ```
 
 2. 发送消息：
@@ -50,14 +58,59 @@ curl "http://localhost:5000/webhook?api_key=your-api-key-here&message=你好，�
 ### POST参数说明
 - `message`：消息内容，必填参数
 
+## API响应格式
+
+- 成功响应 (200):
+```json
+{
+  "status": "success",
+  "message": "全部转发成功",
+  "details": {
+    "gui": "enabled",
+    "onebot": "success",
+    "email": "success"
+  }
+}
+```
+
+- 部分成功响应 (207):
+```json
+{
+  "status": "partial_success",
+  "message": "部分转发成功",
+  "details": {
+    "gui": "enabled",
+    "onebot": "success",
+    "email": "failed"
+  }
+}
+```
+
+
 ## 配置说明
 
 ### config.ini
 
 可以在config.ini中配置以下参数：
+
+#### 基本配置
 - API密钥验证（默认your-api-key-here）
 - 端口号（默认5000）
-- 其他自定义配置
+
+#### OneBot配置
+- enabled: 是否启用OneBot转发
+- url: OneBot HTTP API地址
+- access_token: OneBot访问令牌
+- target_qq: 目标QQ号
+
+#### 邮件配置
+- enabled: 是否启用邮件转发
+- host: SMTP服务器地址
+- port: SMTP服务器端口
+- username: 邮箱账号
+- password: 邮箱密码
+- from: 发件人邮箱
+- to: 收件人邮箱
 
 ## 日志
 
@@ -79,8 +132,6 @@ curl "http://localhost:5000/webhook?api_key=your-api-key-here&message=你好，�
   - 栗云AI API提供支持
   - GET参数是否决定开启tts-type
   - GET参数传递具体内容tts-text
-- [ ] 通知转发功能
-  - 邮箱
-  - QQ消息（OneBot）
-    - 附带监听消息，若监听到回复关键词，则执行cmd操作
 - [ ] web同时显示界面
+- [ ] 消息转发失败重试机制
+- [ ] 支持更多消息转发渠道（如微信、钉钉等）
