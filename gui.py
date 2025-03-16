@@ -88,7 +88,7 @@ class WebhookGUI:
                                 except:
                                     pass
                                 dt = datetime.strptime(timestamp, '%Y-%m-%d %H:%M:%S')
-                                display_time = dt.strftime('%H:%M')
+                                display_time = dt.strftime('%H:%M:%S')
                                 self.display_message(message, custom_timestamp=display_time)
                                 self.message_position = not self.message_position
                         except Exception as e:
