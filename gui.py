@@ -262,6 +262,10 @@ class WebhookGUI:
                     message = parsed
             except:
                 pass
+                
+        # 统一处理换行符
+        if isinstance(message, str):
+            message = message.replace('\\n', '\n')
         
         msg_frame = self.create_message_bubble(message, timestamp, self.message_position, text_from)
         
